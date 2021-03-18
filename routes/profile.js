@@ -56,7 +56,7 @@ router.post("/", auth, async (req, res) => {
 router.put("/experience", auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user });
-    console.log(profile);
+
     profile.experience.unshift(req.body);
     await profile.save();
 
@@ -85,6 +85,38 @@ router.delete("/experience/:expID", auth, async (req, res) => {
 
     profile.experience = profile.experience.filter(
       (exp) => exp._id.toString() !== req.params.expID
+    );
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.put("/education", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user });
+
+    profile.education.unshift(req.body);
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.delete("/education/:eduID", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user });
+
+    profile.education = profile.education.filter(
+      (item) => item._id.toString() !== req.params.eduID
     );
 
     await profile.save();
