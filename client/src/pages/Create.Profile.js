@@ -18,7 +18,7 @@ const CreateProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await PROFILE_SERVICE({
+      await PROFILE_SERVICE({
         company: formData.company,
         website: formData.website,
         location: formData.location,

@@ -15,8 +15,7 @@ const CreateEducation = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await EDU_SERVICE(formData);
-      console.log(res);
+      await EDU_SERVICE(formData);
     } catch (error) {
       console.error(error);
     }

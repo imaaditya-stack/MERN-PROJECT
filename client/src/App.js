@@ -10,10 +10,12 @@ import CreateExperience from "./pages/Create.Experience";
 import CreateEducation from "./pages/Create.Education";
 import Profiles from "./pages/Profiles";
 import Posts from "./pages/Posts";
+import AddPost from "./pages/Add.Post";
 import { Container } from "react-bootstrap";
 import { AUTH_SERVICE } from "./api/service";
 import { setUser } from "./redux/actions/actions";
 import { useDispatch } from "react-redux";
+import PrivateRoute from "./auth/private.route";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -38,12 +40,13 @@ const App = () => {
           <Route path="/" component={Landing} exact />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/create-profile" component={CreateProfile} />
-          <Route path="/add-experience" component={CreateExperience} />
-          <Route path="/add-education" component={CreateEducation} />
-          <Route path="/profiles" component={Profiles} />
-          <Route path="/posts" component={Posts} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+          <PrivateRoute path="/create-profile" component={CreateProfile} />
+          <PrivateRoute path="/add-experience" component={CreateExperience} />
+          <PrivateRoute path="/add-education" component={CreateEducation} />
+          <PrivateRoute path="/profiles" component={Profiles} />
+          <PrivateRoute path="/posts" component={Posts} />
+          <PrivateRoute path="/add-post" component={AddPost} />
         </Switch>
       </Container>
     </Router>

@@ -14,10 +14,8 @@ const CreateExperience = () => {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
     try {
-      const res = await EXP_SERVICE(formData);
-      console.log(res);
+      await EXP_SERVICE(formData);
     } catch (error) {
       console.error(error);
     }
