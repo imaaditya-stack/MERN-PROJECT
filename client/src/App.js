@@ -10,7 +10,7 @@ import CreateExperience from "./pages/Create.Experience";
 import CreateEducation from "./pages/Create.Education";
 import Profiles from "./pages/Profiles";
 import Posts from "./pages/Posts";
-import AddPost from "./pages/Add.Post";
+import AddPost from "./pages/Create.Post";
 import { Container } from "react-bootstrap";
 import { AUTH_SERVICE } from "./api/service";
 import { setUser } from "./redux/actions/actions";

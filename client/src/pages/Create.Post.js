@@ -7,8 +7,7 @@ const AddPost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await ADD_POST_SERVICE({ content: post });
-      console.log(res);
+      await ADD_POST_SERVICE({ content: post });
     } catch (error) {
       console.error(error);
     }

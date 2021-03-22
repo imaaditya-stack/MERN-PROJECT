@@ -91,7 +91,7 @@ const Dashboard = () => {
             {profile?.experience.map((item) => {
               return (
                 <>
-                  <tr>
+                  <tr key={item._id}>
                     <td>{item.company}</td>
                     <td>{item.title}</td>
                     <td>
@@ -125,7 +125,7 @@ const Dashboard = () => {
             {profile?.education.map((item) => {
               return (
                 <>
-                  <tr>
+                  <tr key={item._id}>
                     <td>{item.school}</td>
                     <td>{item.degree}</td>
                     <td>{item.fieldofstudy}</td>
