@@ -18,6 +18,16 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+router.get("/all", async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate("user", ["name", "email"]);
+    res.json(profiles);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 router.post("/", auth, async (req, res) => {
   const {
     company,
