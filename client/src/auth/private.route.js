@@ -1,13 +1,21 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import { isAuthenticated } from "./auth.service";
+import { useSelector } from "react-redux";
+import { Spinner } from "react-bootstrap";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
+  const { loading, isAuthenticated } =
+    useSelector((state) => state.authReducer) || {};
+
   return (
     <Route
       {...rest}
       render={(props) =>
-        isAuthenticated() ? (
+        loading ? (
+          <div className="text-center">
+            <Spinner animation="border" />
+          </div>
+        ) : isAuthenticated ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: "/login", authenticated: false }} />

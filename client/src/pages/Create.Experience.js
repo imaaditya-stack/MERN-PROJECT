@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Container } from "react-bootstrap";
 import { EXP_SERVICE } from "../api/service";
+import { Link, useHistory } from "react-router-dom";
 
 const CreateExperience = () => {
   const [formData, setFormData] = useState({
@@ -12,10 +13,14 @@ const CreateExperience = () => {
     to: "",
     description: "",
   });
+
+  const history = useHistory();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await EXP_SERVICE(formData);
+      history.push("/dashboard");
     } catch (error) {
       console.error(error);
     }
@@ -25,7 +30,8 @@ const CreateExperience = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   return (
-    <>
+    <Container>
+      <h1 className="green-text font-weight-bold mb-3">Add Experience</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Job Title</Form.Label>
@@ -92,10 +98,13 @@ const CreateExperience = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Add Profile
+          Add
         </Button>
+        <Link to="/dashboard" className="btn ml-3">
+          Go Back
+        </Link>
       </Form>
-    </>
+    </Container>
   );
 };
 

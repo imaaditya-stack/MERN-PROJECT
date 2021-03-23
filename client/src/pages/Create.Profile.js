@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Container } from "react-bootstrap";
 import { PROFILE_SERVICE, GET_PROFILE_SERVICE } from "../api/service";
+import { Link } from "react-router-dom";
 
 const CreateProfile = () => {
   const [formData, setFormData] = useState({
@@ -64,7 +65,10 @@ const CreateProfile = () => {
   }, []);
 
   return (
-    <>
+    <Container>
+      <h1 className="green-text font-weight-bold mb-3">
+        {updateProfile ? `Edit Profile` : `Add Profile`}
+      </h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label>Select Professional Status</Form.Label>
@@ -139,10 +143,13 @@ const CreateProfile = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Add Profile
+          {updateProfile ? `Edit Profile` : `Add Profile`}
         </Button>
+        <Link to="/dashboard" className="btn ml-3">
+          Go Back
+        </Link>
       </Form>
-    </>
+    </Container>
   );
 };
 

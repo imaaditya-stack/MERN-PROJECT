@@ -3,8 +3,10 @@ import { Form, Button } from "react-bootstrap";
 import { LOGIN_SERVICE } from "../api/service";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { setUser } from "../redux/actions/actions";
+import { loadUser } from "../redux/actions/actions";
 import { handleAuthentication } from "../auth/auth.service";
+import { Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +28,7 @@ const Login = () => {
     try {
       const res = await LOGIN_SERVICE(data);
       handleAuthentication(res.data);
-      dispatch(setUser(res.data));
+      dispatch(loadUser(res.data));
       history.push("/dashboard");
     } catch (error) {
       console.error(error);
@@ -39,7 +41,9 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   return (
-    <>
+    <Container>
+      <h1 className="green-text font-weight-bold">Login to your account</h1>
+      <br />
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -54,10 +58,16 @@ const Login = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Register
+          Login
         </Button>
+        <p className="mt-2">
+          Don't have an account ?{" "}
+          <Link className="green-text" to="/register">
+            Sign Up
+          </Link>
+        </p>
       </Form>
-    </>
+    </Container>
   );
 };
 

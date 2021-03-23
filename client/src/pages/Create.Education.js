@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Container } from "react-bootstrap";
 import { EDU_SERVICE } from "../api/service";
+import { Link, useHistory } from "react-router-dom";
 
 const CreateEducation = () => {
   const [formData, setFormData] = useState({
@@ -12,10 +13,13 @@ const CreateEducation = () => {
     to: "",
     description: "",
   });
+  const history = useHistory();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await EDU_SERVICE(formData);
+      history.push("/dashboard");
     } catch (error) {
       console.error(error);
     }
@@ -25,7 +29,8 @@ const CreateEducation = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   return (
-    <>
+    <Container>
+      <h1 className="green-text font-weight-bold mb-3">Add Education</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>School/College/Institute</Form.Label>
@@ -92,10 +97,13 @@ const CreateEducation = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Add Profile
+          Add
         </Button>
+        <Link to="/dashboard" className="btn ml-3">
+          Go Back
+        </Link>
       </Form>
-    </>
+    </Container>
   );
 };
 

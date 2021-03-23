@@ -3,6 +3,6 @@ export const getAuthToken = () => {
     const USER_SESSION = JSON.parse(localStorage?.session);
     return USER_SESSION?.token;
   } catch (error) {
-    if (error) return "";
+    if (error) return null;
   }
 };

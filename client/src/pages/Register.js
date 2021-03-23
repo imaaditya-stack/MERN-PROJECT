@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { REGISTER_SERVICE } from "../api/service";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/actions/actions";
+import { loadUser } from "../redux/actions/actions";
 import { handleAuthentication } from "../auth/auth.service";
+import { Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +29,7 @@ const Register = () => {
     try {
       const res = await REGISTER_SERVICE(data);
       handleAuthentication(res.data);
-      dispatch(setUser(res.data));
+      dispatch(loadUser(res.data));
     } catch (error) {
       console.error(error);
     }
@@ -39,7 +41,9 @@ const Register = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   return (
-    <>
+    <Container>
+      <h1 className="green-text font-weight-bold">Create a new account</h1>
+      <br />
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicName">
           <Form.Label>Name</Form.Label>
@@ -68,8 +72,14 @@ const Register = () => {
         <Button variant="primary" type="submit">
           Register
         </Button>
+        <p className="mt-2">
+          Already have an account ?{" "}
+          <Link className="green-text" to="/login">
+            Login
+          </Link>
+        </p>
       </Form>
-    </>
+    </Container>
   );
 };
 

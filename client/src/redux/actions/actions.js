@@ -1,10 +1,18 @@
-import { SET_USER } from "./types";
+import { LOAD_USER, AUTH_ERROR, LOGOUT } from "./types";
 
-const setUser = (user) => ({
-  type: SET_USER,
+const loadUser = (user) => ({
+  type: LOAD_USER,
   paylaod: {
     user,
   },
 });
 
-export { setUser };
+const authError = () => ({
+  type: AUTH_ERROR,
+});
+
+const logout = () => ({
+  type: LOGOUT,
+});
+
+export { loadUser, authError, logout };
