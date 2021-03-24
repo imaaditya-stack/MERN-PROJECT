@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   GET_PROFILE_SERVICE,
   DEL_EXP_SERVICE,
@@ -8,26 +8,34 @@ import DashboardActions from "../components/DashboardActions";
 import { Link } from "react-router-dom";
 import Experience from "../components/Experience";
 import Education from "../components/Education";
-import { Container, Spinner } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { Container } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../components/Loader";
+import {
+  GET_PROFILE,
+  DELETE_EXP,
+  DELETE_EXP_ERROR,
+  DELETE_EDU,
+  DELETE_EDU_ERROR,
+  PROFILE_ERROR,
+} from "../redux/actions/types";
 
 const Dashboard = () => {
-  const [profile, setProfile] = useState();
-  const [hasProfile, setHasProfile] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const disptach = useDispatch();
   const { user } = useSelector((state) => state.authReducer) || {};
+  const { profile, loadingProfile } =
+    useSelector((state) => state.profileReducer) || {};
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await GET_PROFILE_SERVICE();
-        setHasProfile(true);
-        setProfile(res.data);
-        setLoading(false);
+        if (res.status === 200) {
+          disptach({ type: GET_PROFILE, payload: res.data });
+        }
       } catch (error) {
         if (error.response?.status === 400) {
-          setHasProfile(false);
-          setLoading(false);
+          disptach({ type: PROFILE_ERROR });
         }
       }
     };
@@ -38,44 +46,44 @@ const Dashboard = () => {
   const deleteExp = async (id) => {
     const currentExp = profile.experience;
 
-    setProfile({
-      ...profile,
-      experience: currentExp.filter((exp) => exp._id !== id),
-    });
+    disptach({ type: DELETE_EXP, payload: id });
 
     try {
-      await DEL_EXP_SERVICE(id);
-      alert("Experience Deleted Successfully");
+      const res = await DEL_EXP_SERVICE(id);
+      if (res.status === 200) {
+        alert("Experience Deleted Successfully");
+      }
     } catch (error) {
-      setProfile({ ...profile, experience: currentExp });
-      alert("Experience Deletion Failed");
+      if (error) {
+        disptach({ type: DELETE_EXP_ERROR, payload: currentExp });
+        alert("Experience Deletion Failed");
+      }
     }
   };
 
   const deleteEdu = async (id) => {
     const currentEdu = profile.education;
 
-    setProfile({
-      ...profile,
-      education: currentEdu.filter((exp) => exp._id !== id),
-    });
+    disptach({ type: DELETE_EDU, payload: id });
 
     try {
-      await DEL_EDU_SERVICE(id);
-      alert("Education Deleted Successfully");
+      const res = await DEL_EDU_SERVICE(id);
+      if (res.status === 200) {
+        alert("Education Deleted Successfully");
+      }
     } catch (error) {
-      setProfile({ ...profile, education: currentEdu });
-      alert("Education Deletion Failed");
+      if (error) {
+        disptach({ type: DELETE_EDU_ERROR, payload: currentEdu });
+        alert("Education Deletion Failed");
+      }
     }
   };
 
   return (
     <Container>
-      {loading ? (
-        <div className="text-center">
-          <Spinner animation="border" />
-        </div>
-      ) : hasProfile ? (
+      {loadingProfile ? (
+        <Loader />
+      ) : profile !== null ? (
         <>
           <h1 className="green-text font-weight-bold">Welcome {user?.name}</h1>
           <DashboardActions />

@@ -1,3 +1,15 @@
 export const LOAD_USER = "LOAD_USER";
 export const AUTH_ERROR = "AUTH_ERROR";
 export const LOGOUT = "LOGOUT";
+export const GET_PROFILE = "GET_PROFILE";
+export const PROFILE_ERROR = "PROFILE_ERROR";
+export const DELETE_EDU = "DELETE_EDU";
+export const DELETE_EXP = "DELETE_EXP";
+export const DELETE_EXP_ERROR = "DELETE_EXP_ERROR";
+export const DELETE_EDU_ERROR = "DELETE_EDU_ERROR";
+export const RESET_APP = "RESET_APP";
+export const PROFILES = "PROFILES";
+export const PROFILES_ERROR = "PROFILES_ERROR";
+export const GET_REPOS = "GET_REPOS";
+export const REPOS_ERROR = "REPOS_ERROR";
+export const CLEAR_REPOS = "CLEAR_REPOS";

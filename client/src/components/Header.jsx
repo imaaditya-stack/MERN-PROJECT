@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { logout } from "../redux/actions/actions";
+import { RESET_APP } from "../redux/actions/types";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CodeIcon from "@material-ui/icons/Code";
@@ -11,7 +11,7 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    dispatch(logout());
+    dispatch({ type: RESET_APP });
     history.push("/");
   };
 

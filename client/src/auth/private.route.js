@@ -11,11 +11,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        loading ? (
-          <div className="text-center">
-            <Spinner animation="border" />
-          </div>
-        ) : isAuthenticated ? (
+        loading ? null : isAuthenticated ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: "/login", authenticated: false }} />

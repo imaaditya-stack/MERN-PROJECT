@@ -10,6 +10,7 @@ import {
   POSTS_API,
   POST_LIKE_API,
   POST_UNLIKE_API,
+  GITHUB_API,
 } from "./config";
 import { getAuthToken } from "../auth/auth.token";
 
@@ -69,3 +70,6 @@ export const POST_UNLIKE_SERVICE = (id) =>
 
 export const POST_DELETE_SERVICE = (id) =>
   apiClient.delete(`${POSTS_API}/${id}`);
+
+export const GITHUB_SERVICE = (username) =>
+  apiClient.get(`${GITHUB_API}/${username}`);

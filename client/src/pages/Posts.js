@@ -2,15 +2,21 @@ import React, { useEffect, useState } from "react";
 import { GET_POSTS_SERVICE } from "../api/service";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import {
   POST_LIKE_SERVICE,
   POST_UNLIKE_SERVICE,
   POST_DELETE_SERVICE,
 } from "../api/service";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import IconButton from "@material-ui/core/IconButton";
+import ThumbDownAltIcon from "@material-ui/icons/ThumbDownAlt";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Loader from "../components/Loader";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const data = useSelector((state) => state.authReducer?.user);
 
   useEffect(() => {
@@ -18,8 +24,9 @@ const Posts = () => {
       try {
         const res = await GET_POSTS_SERVICE();
         setPosts(res.data);
+        setLoading(false);
       } catch (error) {
-        console.log(error);
+        setLoading(false);
       }
     };
     fetchPosts();
@@ -68,26 +75,38 @@ const Posts = () => {
   };
 
   return (
-    <>
-      <h1>posts</h1>
-      <Link className="btn btn-primary" to="/add-post">
+    <Container>
+      <h1 className="green-text font-weight-bold">Posts</h1>
+      <Link className="btn btn-primary mb-3" to="/add-post">
         Add Post
       </Link>
-      {posts.map((post) => {
-        return (
-          <>
-            <div key={post._id} className="bg-light">
+      {loading ? (
+        <Loader />
+      ) : (
+        posts.map((post) => {
+          return (
+            <div key={post._id} className="post">
               <p>{post.content}</p>
-              <p>Total Likes: {post.likes.length}</p>
-              <Button onClick={() => handleLike(post._id)}>Like</Button>
-              <Button onClick={() => handleDisLike(post._id)}>DisLike</Button>
-              <Button onClick={() => handleDelete(post._id)}>Delete</Button>
-              <p>{post.user === data?._id ? "Can delete" : "Cannot delete"}</p>
+              <IconButton onClick={() => handleLike(post._id)}>
+                <ThumbUpIcon />{" "}
+              </IconButton>
+              <span>{post.likes.length}</span>
+              <IconButton onClick={() => handleDisLike(post._id)}>
+                <ThumbDownAltIcon />{" "}
+              </IconButton>
+              {post.user === data?._id && (
+                <IconButton onClick={() => handleDelete(post._id)}>
+                  <DeleteIcon />{" "}
+                </IconButton>
+              )}
+              <p className="text-muted">
+                By {post.name} on {post.date.split("T")[0]}
+              </p>
             </div>
-          </>
-        );
-      })}
-    </>
+          );
+        })
+      )}
+    </Container>
   );
 };
 

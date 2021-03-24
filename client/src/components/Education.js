@@ -21,18 +21,16 @@ const Education = ({ data, deleteEdu }) => {
         <tbody>
           {data?.map((item) => {
             return (
-              <>
-                <tr key={item._id}>
-                  <td>{item.school}</td>
-                  <td>{item.degree}</td>
-                  <td>{item.fieldofstudy}</td>
-                  <td>
-                    <IconButton onClick={() => deleteEdu(item._id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </td>
-                </tr>
-              </>
+              <tr key={item._id}>
+                <td>{item.school}</td>
+                <td>{item.degree}</td>
+                <td>{item.fieldofstudy}</td>
+                <td>
+                  <IconButton onClick={() => deleteEdu(item._id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </td>
+              </tr>
             );
           })}
         </tbody>

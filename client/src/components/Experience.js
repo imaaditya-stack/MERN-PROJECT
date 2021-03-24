@@ -21,21 +21,19 @@ const Experience = ({ data, deleteExp }) => {
         <tbody>
           {data?.map((item) => {
             return (
-              <>
-                <tr key={item._id}>
-                  <td>{item.company}</td>
-                  <td>{item.title}</td>
-                  <td>
-                    {item.from.split("T")[0]} -{" "}
-                    {item.to ? item.to.split("T")[0] : "Present"}
-                  </td>
-                  <td>
-                    <IconButton onClick={() => deleteExp(item._id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </td>
-                </tr>
-              </>
+              <tr key={item._id}>
+                <td>{item.company}</td>
+                <td>{item.title}</td>
+                <td>
+                  {item.from.split("T")[0]} -{" "}
+                  {item.to ? item.to.split("T")[0] : "Present"}
+                </td>
+                <td>
+                  <IconButton onClick={() => deleteExp(item._id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </td>
+              </tr>
             );
           })}
         </tbody>

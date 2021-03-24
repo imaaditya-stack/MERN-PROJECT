@@ -16,6 +16,7 @@ import { loadUser, authError, logout } from "./redux/actions/actions";
 import { useDispatch } from "react-redux";
 import PrivateRoute from "./auth/private.route";
 import { getAuthToken } from "./auth/auth.token";
+import SingleProfile from "./pages/Single.Profile";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -33,13 +34,9 @@ const App = () => {
     };
     fetchUser();
 
-    const cleanUp = () => {
+    window.addEventListener("storage", () => {
       if (!getAuthToken()) dispatch(logout());
-    };
-
-    window.addEventListener("storage", cleanUp());
-
-    return () => window.removeEventListener("storage", cleanUp());
+    });
   }, [dispatch]);
 
   return (
@@ -54,6 +51,7 @@ const App = () => {
         <PrivateRoute path="/add-experience" component={CreateExperience} />
         <PrivateRoute path="/add-education" component={CreateEducation} />
         <PrivateRoute path="/profiles" component={Profiles} />
+        <PrivateRoute path="/profile" component={SingleProfile} />
         <PrivateRoute path="/posts" component={Posts} />
         <PrivateRoute path="/add-post" component={AddPost} />
       </Switch>

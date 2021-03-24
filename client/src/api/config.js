@@ -8,3 +8,4 @@ export const EDU_API = `/api/profile/education`;
 export const POSTS_API = `/api/posts`;
 export const POST_LIKE_API = `api/posts/like`;
 export const POST_UNLIKE_API = `api/posts/unlike`;
+export const GITHUB_API = `api/profile/github`;
