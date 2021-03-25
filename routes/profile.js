@@ -40,7 +40,7 @@ router.post("/", auth, async (req, res) => {
     bio,
     githubusername,
   } = req.body;
-
+  console.log(status);
   const profileFields = {
     user: req.user,
     company: company,
