@@ -39,12 +39,18 @@ const Dashboard = () => {
         <>
           <h1 className="green-text font-weight-bold">Welcome {user?.name}</h1>
           <DashboardActions />
-          <Experience data={profile?.experience} deleteExp={deleteExp} />
-          <Education data={profile?.education} deleteEdu={deleteEdu} />
+          {profile?.experience.length !== 0 && (
+            <Experience data={profile?.experience} deleteExp={deleteExp} />
+          )}
+          {profile?.education.length !== 0 && (
+            <Education data={profile?.education} deleteEdu={deleteEdu} />
+          )}
         </>
       ) : (
         <>
-          <p>You have not yet setup a profile, please add some info</p>
+          <h3 className="green-text font-weight-bold mb-3">
+            You have not yet setup a profile, please add some info !
+          </h3>
           <Link to="/create-profile" className="btn btn-primary">
             Create Profile
           </Link>

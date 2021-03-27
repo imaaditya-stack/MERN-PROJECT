@@ -132,7 +132,7 @@ const CreateProfile = () => {
               ref={register}
             />
             <span className="text-danger text-capitalize">
-              {errors.githubUsername?.message}
+              {errors.githubusername?.message}
             </span>
           </Form.Group>
           <Form.Group controlId="bio">

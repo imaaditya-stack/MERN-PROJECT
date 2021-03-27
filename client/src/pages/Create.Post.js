@@ -23,7 +23,9 @@ const AddPost = () => {
   };
   return (
     <Container>
-      <h1 className="green-text font-weight-bold">Add post</h1>
+      <h1 className="green-text font-weight-bold">
+        Welcome to the community !
+      </h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>What's on your mind?</Form.Label>

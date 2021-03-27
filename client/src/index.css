@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 :root {
-    --main: #015249;
-    --light-green: #57BC90;
+    --main: #0066E8;
+    --light-blue: #348CFC;
 }
 
 * {
@@ -52,13 +52,18 @@
 
 .btn:hover,
 .btn:focus {
-    background-color: var(--light-green) !important;
+    background-color: var(--light-blue) !important;
     transition: 0.3s ease-in-out !important;
 }
 
 .login-btn {
     background-color: #fff !important;
     color: var(--main) !important;
+}
+
+.login-btn:hover,
+.login-btn:focus {
+    color: #fff !important;
 }
 
 .container {

@@ -25,7 +25,7 @@ const SingleProfile = (props) => {
 
   return (
     <Container>
-      <h1>{profile.user.name}</h1>
+      <h1 className="green-text font-weight-bold">{profile.user.name}</h1>
       <h5>
         {profile.status} at {profile.company}
       </h5>
