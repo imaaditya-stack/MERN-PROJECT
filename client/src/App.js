@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import Header from "./components/Header";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
@@ -11,28 +11,18 @@ import CreateEducation from "./pages/Create.Education";
 import Profiles from "./pages/Profiles";
 import Posts from "./pages/Posts";
 import AddPost from "./pages/Create.Post";
-import { AUTH_SERVICE } from "./api/service";
-import { loadUser, authError, logout } from "./redux/actions/actions";
+import { loadUser, logout } from "./redux/actions";
 import { useDispatch } from "react-redux";
 import PrivateRoute from "./auth/private.route";
 import { getAuthToken } from "./auth/auth.token";
 import SingleProfile from "./pages/Single.Profile";
+import history from "./utils/history";
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await AUTH_SERVICE();
-        dispatch(loadUser(res.data));
-      } catch (error) {
-        if (error) {
-          dispatch(authError());
-        }
-      }
-    };
-    fetchUser();
+    dispatch(loadUser());
 
     window.addEventListener("storage", () => {
       if (!getAuthToken()) dispatch(logout());
@@ -40,7 +30,7 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <Router>
+    <Router history={history}>
       <Header />
       <Switch>
         <Route path="/" component={Landing} exact />

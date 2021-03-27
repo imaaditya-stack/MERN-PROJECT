@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
-import { ADD_POST_SERVICE } from "../api/service";
 import { useHistory, Link } from "react-router-dom";
+import { addPost } from "../redux/actions";
+import { useDispatch } from "react-redux";
 
 const AddPost = () => {
-  const [post, setPost] = useState();
+  const [post, setPost] = useState("");
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await ADD_POST_SERVICE({ content: post });
-      history.push("/posts");
-    } catch (error) {
-      console.error(error);
+    if (post.length < 50) {
+      alert("Post content must contain atleast 50 characters");
+    } else {
+      dispatch(addPost(post, history));
     }
   };
 

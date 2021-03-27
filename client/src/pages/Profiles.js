@@ -1,11 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import { PROFILES_SERVICE } from "../api/service";
 import { Container } from "react-bootstrap";
 import CheckIcon from "@material-ui/icons/Check";
 import { Link } from "react-router-dom";
-import { PROFILES, PROFILES_ERROR } from "../redux/actions/types";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
+import { loadProfiles } from "../redux/actions";
 
 const Profiles = () => {
   const dispatch = useDispatch();
@@ -14,21 +14,8 @@ const Profiles = () => {
     useSelector((state) => state.profileReducer) || {};
 
   useEffect(() => {
-    const fetchProfiles = async () => {
-      try {
-        const res = await PROFILES_SERVICE();
-        if (res.status === 200) {
-          dispatch({ type: PROFILES, payload: res.data });
-        }
-      } catch (error) {
-        if (error) {
-          dispatch({ type: PROFILES_ERROR });
-        }
-        console.log(error);
-      }
-    };
-    fetchProfiles();
-  }, [dispatch]);
+    dispatch(loadProfiles());
+  }, []);
 
   return (
     <Container>

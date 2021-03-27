@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Form, Button, Container } from "react-bootstrap";
-import { PROFILE_SERVICE, GET_PROFILE_SERVICE } from "../api/service";
 import { Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { GET_PROFILE } from "../redux/actions/types";
 import Loader from "../components/Loader";
+import { createProfile, loadCurrentProfile } from "../redux/actions";
 
 const CreateProfile = () => {
-  const disptach = useDispatch();
-  const { profile, loadingProfile } =
+  const dispatch = useDispatch();
+  const { profile, loadingProfile, hasProfile } =
     useSelector((state) => state.profileReducer) || {};
 
   const schema = yup.object().shape({
@@ -31,45 +30,19 @@ const CreateProfile = () => {
     resolver: yupResolver(schema),
   });
 
-  const [updateProfile, setUpdateProfile] = useState(false);
-
   const onSubmit = async (data) => {
-    console.log(data);
-    try {
-      const res = await PROFILE_SERVICE(data);
-      if (res.status === 200) {
-        updateProfile
-          ? alert("Profile Updated Successfully")
-          : alert("Profile Created Successfully");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getProfile = async () => {
-    try {
-      const res = await GET_PROFILE_SERVICE();
-      if (res.status === 200) {
-        disptach({ type: GET_PROFILE, payload: res.data });
-        setUpdateProfile(true);
-      }
-    } catch (error) {
-      if (error.response?.status === 400) {
-        console.log("Profile Doesn't Exists");
-      }
-    }
+    dispatch(createProfile(data, hasProfile));
   };
 
   useEffect(() => {
-    getProfile();
+    dispatch(loadCurrentProfile());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Container>
       <h1 className="green-text font-weight-bold mb-3">
-        {updateProfile ? `Edit Profile` : `Add Profile`}
+        {hasProfile ? `Edit Profile` : `Add Profile`}
       </h1>
       {loadingProfile ? (
         <Loader />
@@ -78,7 +51,7 @@ const CreateProfile = () => {
           <Controller
             name="status"
             control={control}
-            defaultValue={profile.status}
+            defaultValue={profile?.status}
             render={(props) => (
               <Form.Group>
                 <Form.Label>Select Professional Status</Form.Label>
@@ -86,7 +59,7 @@ const CreateProfile = () => {
                   as="select"
                   ref={register}
                   name="status"
-                  defaultValue={profile.status}
+                  defaultValue={profile?.status}
                 >
                   <option value="Developer">Developer</option>
                   <option value="Junior Developer">Junior Developer</option>
@@ -107,8 +80,7 @@ const CreateProfile = () => {
             <Form.Control
               type="text"
               name="company"
-              // onChange={handleChange}
-              defaultValue={profile.company}
+              defaultValue={profile?.company}
               ref={register}
             />
             <span className="text-danger text-capitalize">
@@ -120,8 +92,7 @@ const CreateProfile = () => {
             <Form.Control
               type="text"
               name="website"
-              // onChange={handleChange}
-              defaultValue={profile.website}
+              defaultValue={profile?.website}
               ref={register}
             />
             <span className="text-danger text-capitalize">
@@ -133,8 +104,7 @@ const CreateProfile = () => {
             <Form.Control
               type="text"
               name="location"
-              // onChange={handleChange}
-              defaultValue={profile.location}
+              defaultValue={profile?.location}
               ref={register}
             />
             <span className="text-danger text-capitalize">
@@ -146,8 +116,7 @@ const CreateProfile = () => {
             <Form.Control
               type="text"
               name="skills"
-              // onChange={handleChange}
-              defaultValue={profile.skills}
+              defaultValue={profile?.skills}
               ref={register}
             />
             <span className="text-danger text-capitalize">
@@ -159,8 +128,7 @@ const CreateProfile = () => {
             <Form.Control
               type="text"
               name="githubusername"
-              // onChange={handleChange}
-              defaultValue={profile.githubusername}
+              defaultValue={profile?.githubusername}
               ref={register}
             />
             <span className="text-danger text-capitalize">
@@ -172,8 +140,7 @@ const CreateProfile = () => {
             <Form.Control
               as="textarea"
               name="bio"
-              // onChange={handleChange}
-              defaultValue={profile.bio}
+              defaultValue={profile?.bio}
               ref={register}
             />
             <span className="text-danger text-capitalize">
@@ -181,7 +148,7 @@ const CreateProfile = () => {
             </span>
           </Form.Group>
           <Button variant="primary" type="submit">
-            {updateProfile ? `Edit Profile` : `Add Profile`}
+            {hasProfile ? `Edit Profile` : `Add Profile`}
           </Button>
           <Link to="/dashboard" className="btn ml-3">
             Go Back

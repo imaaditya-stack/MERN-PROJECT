@@ -1,7 +1,7 @@
 export const handleAuthentication = (data) => {
   const USER_SESSION = JSON.stringify({
     is_authenticated: true,
-    ...data,
+    token: data.token,
   });
   localStorage.setItem("session", USER_SESSION);
 };

@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import { LOGIN_SERVICE } from "../api/service";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { loadUser } from "../redux/actions/actions";
-import { handleAuthentication } from "../auth/auth.service";
+import { login } from "../redux/actions";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -15,7 +12,6 @@ const Login = () => {
   });
 
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,14 +21,7 @@ const Login = () => {
       password: formData.password,
     };
 
-    try {
-      const res = await LOGIN_SERVICE(data);
-      handleAuthentication(res.data);
-      dispatch(loadUser(res.data));
-      history.push("/dashboard");
-    } catch (error) {
-      console.error(error);
-    }
+    dispatch(login(data));
 
     e.target.reset();
   };
@@ -47,7 +36,12 @@ const Login = () => {
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" name="email" onChange={handleChange} />
+          <Form.Control
+            type="email"
+            name="email"
+            onChange={handleChange}
+            required
+          />
         </Form.Group>
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
@@ -55,6 +49,7 @@ const Login = () => {
             type="password"
             name="password"
             onChange={handleChange}
+            required
           />
         </Form.Group>
         <Button variant="primary" type="submit">

@@ -1,77 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { GET_POSTS_SERVICE } from "../api/service";
-import { useSelector } from "react-redux";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import {
-  POST_LIKE_SERVICE,
-  POST_UNLIKE_SERVICE,
-  POST_DELETE_SERVICE,
-} from "../api/service";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbDownAltIcon from "@material-ui/icons/ThumbDownAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Loader from "../components/Loader";
+import { loadPosts, deletePost, likePost, unlikePost } from "../redux/actions";
 
 const Posts = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const data = useSelector((state) => state.authReducer?.user);
+  const { posts, loading } = useSelector((state) => state.postReducer) || {};
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await GET_POSTS_SERVICE();
-        setPosts(res.data);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-      }
-    };
-    fetchPosts();
+    dispatch(loadPosts());
   }, []);
 
   const handleLike = async (id) => {
-    try {
-      const res = await POST_LIKE_SERVICE(id);
-      const updatedPosts = posts.map((post) =>
-        post._id === id ? { ...post, likes: res.data } : post
-      );
-      setPosts(updatedPosts);
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(likePost(id));
   };
 
   const handleDisLike = async (id) => {
-    try {
-      const res = await POST_UNLIKE_SERVICE(id);
-      const updatedPosts = posts.map((post) =>
-        post._id === id ? { ...post, likes: res.data } : post
-      );
-      setPosts(updatedPosts);
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(unlikePost(id));
   };
 
   const handleDelete = async (id) => {
-    const currentPosts = posts;
-
-    const updatedPosts = posts.filter((post) => post._id !== id);
-
-    setPosts(updatedPosts);
-
-    try {
-      await POST_DELETE_SERVICE(id);
-      alert("Post Deleted Successfully");
-    } catch (error) {
-      if (error) {
-        alert("Post Deletion Failed");
-        setPosts(currentPosts);
-      }
-    }
+    dispatch(deletePost(id, posts));
   };
 
   return (

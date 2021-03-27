@@ -47,9 +47,12 @@ router.post("/register", async (req, res) => {
         if (err) throw err;
         res.json({
           token,
-          name: user.name,
-          email: user.email,
-          registered: true,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            date: user.date,
+          },
         });
       }
     );
@@ -63,7 +66,7 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
 
     if (!user)
       return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
@@ -81,9 +84,12 @@ router.post("/login", async (req, res) => {
         if (err) throw err;
         res.json({
           token,
-          name: user.name,
-          email: user.email,
-          registered: true,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            date: user.date,
+          },
         });
       }
     );

@@ -14,6 +14,7 @@ import {
 
 const INIT_STATE = {
   profile: null,
+  hasProfile: false,
   profiles: [],
   loadingProfile: true,
   loadingProfiles: true,
@@ -24,13 +25,18 @@ const INIT_STATE = {
 const profileReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_PROFILE: {
-      return { ...state, profile: action.payload, loadingProfile: false };
+      return {
+        ...state,
+        profile: action.payload,
+        loadingProfile: false,
+        hasProfile: true,
+      };
     }
     case PROFILES: {
       return { ...state, profiles: action.payload, loadingProfiles: false };
     }
     case PROFILE_ERROR: {
-      return { ...state, loadingProfile: false };
+      return { ...state, loadingProfile: false, hasProfile: false };
     }
     case PROFILES_ERROR: {
       return { ...state, loadingProfiles: false };

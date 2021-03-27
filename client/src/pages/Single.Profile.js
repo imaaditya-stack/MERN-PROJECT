@@ -6,35 +6,22 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { useDispatch, useSelector } from "react-redux";
 import Education from "../containers/Education";
 import Experience from "../containers/Experience";
-import { GITHUB_SERVICE } from "../api/service";
 import GithubRepos from "../components/Github.Repos";
-import { REPOS_ERROR, GET_REPOS, CLEAR_REPOS } from "../redux/actions/types";
+import { CLEAR_REPOS } from "../redux/actions/types";
 import Loader from "../components/Loader";
+import { getGithubRepos } from "../redux/actions";
 
 const SingleProfile = (props) => {
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
   const { repos, loadingRepos } =
     useSelector((state) => state.profileReducer) || {};
   const profile = props.location.state.profile;
 
   useEffect(() => {
-    const fetchGithub = async () => {
-      try {
-        const res = await GITHUB_SERVICE(profile.githubusername);
-        if (res.status === 200) {
-          disptach({ type: GET_REPOS, payload: res.data });
-        }
-      } catch (error) {
-        if (error) {
-          disptach({ type: REPOS_ERROR });
-        }
-        console.log(error);
-      }
-    };
-    fetchGithub();
+    dispatch(getGithubRepos(profile.githubusername));
 
-    return () => disptach({ type: CLEAR_REPOS });
-  }, [profile.githubusername, disptach]);
+    return () => dispatch({ type: CLEAR_REPOS });
+  }, [profile.githubusername, dispatch]);
 
   return (
     <Container>

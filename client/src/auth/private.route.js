@@ -11,7 +11,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        loading ? null : isAuthenticated ? (
+        loading ? (
+          <Spinner />
+        ) : isAuthenticated ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: "/login", authenticated: false }} />

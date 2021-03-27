@@ -1,73 +1,65 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form, Button } from "react-bootstrap";
-import { REGISTER_SERVICE } from "../api/service";
 import { useDispatch } from "react-redux";
-import { loadUser } from "../redux/actions/actions";
-import { handleAuthentication } from "../auth/auth.service";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { signup } from "../redux/actions";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password1: "",
-  });
-
   const dispatch = useDispatch();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const schema = yup.object().shape({
+    name: yup.string().min(3).required(),
+    email: yup.string().email().required(),
+    password: yup.string().min(8).required(),
+    password1: yup
+      .string()
+      .oneOf([yup.ref("password"), null], "Passwords must match"),
+  });
 
-    const data = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-    };
+  const { register, handleSubmit, errors } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-    try {
-      const res = await REGISTER_SERVICE(data);
-      handleAuthentication(res.data);
-      dispatch(loadUser(res.data));
-    } catch (error) {
-      console.error(error);
-    }
-
-    e.target.reset();
+  const onSubmit = async (data) => {
+    dispatch(signup(data));
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
   return (
     <Container>
       <h1 className="green-text font-weight-bold">Create a new account</h1>
       <br />
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group controlId="formBasicName">
           <Form.Label>Name</Form.Label>
-          <Form.Control type="text" name="name" onChange={handleChange} />
+          <Form.Control type="text" name="name" ref={register} />
+          <span className="text-danger text-capitalize">
+            {errors.name?.message}
+          </span>
         </Form.Group>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" name="email" onChange={handleChange} />
+          <Form.Control type="email" name="email" ref={register} />
+          <span className="text-danger text-capitalize">
+            {errors.email?.message}
+          </span>
         </Form.Group>
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="password"
-            onChange={handleChange}
-          />
+          <Form.Control type="password" name="password" ref={register} />
+          <span className="text-danger text-capitalize">
+            {errors.password?.message}
+          </span>
         </Form.Group>
         <Form.Group controlId="formBasicPassword1">
           <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="password1"
-            onChange={handleChange}
-          />
+          <Form.Control type="password" name="password1" ref={register} />
+          <span className="text-danger text-capitalize">
+            {errors.password1?.message}
+          </span>
         </Form.Group>
         <Button variant="primary" type="submit">
           Register
